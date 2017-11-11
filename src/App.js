@@ -5,7 +5,7 @@ import Messages from "./Messages";
 import PostMessage from "./PostMessage";
 import uuid from "uuid";
 import SortMessage from "./SortMessage";
-//import Search from "./SearchFilter";
+import Search from "./SearchFilter";
 
 class App extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class App extends Component {
     this.handleDownvote = this.handleDownvote.bind(this);
     this.handlePostMessage = this.handlePostMessage.bind(this);
     this.handleOrderMessage = this.handleOrderMessage.bind(this);
-    this.handleSearchMessage = this.handleSearchMessage.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   //Post new message on board by adding to the array of messages. Automatically added to the end.
@@ -41,10 +41,8 @@ class App extends Component {
   }
 
   //Incomplete
-  handleSearchMessage(message) {
-    this.setState({
-      messages: this.state.messages
-    });
+  handleSearch(event) {
+    console.log(event.target.value);
   }
 
   //Incomplete - Not working yet
@@ -86,33 +84,38 @@ class App extends Component {
     return (
       <div>
         <Header title={"Jenna's"} />
-        <div class="container">
-          <div class="panel-group">
-            <div class="panel panel-primary">
-              <div class="panel-heading">Post a message</div>
-              <div class="panel-body">
-                <PostMessage onPostMessage={this.handlePostMessage} />
-              </div>
+        <div class="container" />
+        <div class="panel-group">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Post a message</div>
+            <div class="panel-body">
+              <PostMessage onPostMessage={this.handlePostMessage} />
             </div>
-            <div class="panel-group">
-              <div class="panel panel-default">
-                <div class="panel-heading">Message Board</div>
-                <SortMessage onSortMessage={this.handleOrderMessage} />
-                <ul class="message-board">
-                  {this.state.messages.map(message => {
-                    return (
-                      <Messages
-                        text={message.text}
-                        likes={message.likes}
-                        id={message.id}
-                        onLike={this.handleLike}
-                        onDownvote={this.handleDownvote}
-                        onDelete={this.handleDelete}
-                      />
-                    );
-                  })}
-                </ul>
-              </div>
+          </div>
+          <div class="panel-group">
+            <div class="panel panel-default">
+              <div class="panel-heading">Message Board</div>
+              <SortMessage onSortMessage={this.handleOrderMessage} />
+              <ul class="message-board">
+                <div class="row">
+                  <div class="input-field">
+                    <label>Search</label>
+                    <input type="text" onKeyUp={this.handleSearch} />
+                  </div>
+                </div>
+                {this.state.messages.map(message => {
+                  return (
+                    <Messages
+                      text={message.text}
+                      likes={message.likes}
+                      id={message.id}
+                      onLike={this.handleLike}
+                      onDownvote={this.handleDownvote}
+                      onDelete={this.handleDelete}
+                    />
+                  );
+                })}
+              </ul>
             </div>
           </div>
         </div>
